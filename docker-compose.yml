@@ -1,4 +1,19 @@
 services:
+  caddy:
+    image: caddy:2.6.2-alpine
+    container_name: caddy
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ${PWD}/Caddyfile:/etc/caddy/Caddyfile
+      - ${PWD}/.caddy/certs:/root/certs/
+      - caddydata:/data
+      - caddyconfig:/config
+    restart: unless-stopped
+    networks:
+      default:
+        ipv4_address: 10.10.10.5
   relay:
     build: .
     container_name: nostr-ts-relay
@@ -109,3 +124,5 @@ networks:
 volumes:
   cache:
   pgdata:
+  caddyconfig:
+  caddydata:
